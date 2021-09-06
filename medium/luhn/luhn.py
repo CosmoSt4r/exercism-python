@@ -1,11 +1,11 @@
 class Luhn:
     def __init__(self, card_num):
-        card_num = card_num.replace(' ', '')
+        card_num = card_num.replace(" ", "")
         self.card_num = card_num
 
     def valid(self):
         card_num = [x for x in self.card_num]
-        
+
         if len(card_num) <= 1:
             return False
 
@@ -20,4 +20,3 @@ class Luhn:
                 card_num[i] -= 9
 
         return sum(card_num) % 10 == 0
-

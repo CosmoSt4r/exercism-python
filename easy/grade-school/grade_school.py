@@ -1,5 +1,6 @@
 from functools import cmp_to_key
 
+
 class Student:
     def __init__(self, name, grade):
         self.name = name
@@ -10,6 +11,7 @@ class Student:
         if first.grade == second.grade:
             return 1 if second.name < first.name else -1
         return 1 if second.grade < first.grade else -1
+
 
 class School:
     def __init__(self):
@@ -23,7 +25,6 @@ class School:
         return [student.name for student in self.students]
 
     def grade(self, grade_number):
-        return [student.name for student in self.students
-                if student.grade == grade_number]
-
-
+        return [
+            student.name for student in self.students if student.grade == grade_number
+        ]

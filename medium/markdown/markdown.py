@@ -13,7 +13,7 @@ def parse(markdown):
         header = re.match("(#+).*", line)
         if header:
             header = len(header.group(1))
-            line = f"<h{header}>" + line[header + 1:] + f"</h{header}>"
+            line = f"<h{header}>" + line[header + 1 :] + f"</h{header}>"
 
         # Listing start
         listing = re.match(r"\* (.*)", line)

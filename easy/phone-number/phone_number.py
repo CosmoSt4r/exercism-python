@@ -6,6 +6,7 @@ https://exercism.org/tracks/python/exercises/phone-number
 
 import re
 
+
 class PhoneNumber:
     """Phone number class"""
 
@@ -15,7 +16,7 @@ class PhoneNumber:
 
         if len(number) != 10:
             return False
-        if number[0] in '01' or number[3] in '01':
+        if number[0] in "01" or number[3] in "01":
             return False
         return True
 
@@ -23,8 +24,8 @@ class PhoneNumber:
     def clean(number):
         """Remove country code, punctuation and whitespaces"""
 
-        number = re.sub(r'[^\w\s]', '', number).replace(' ', '')
-        if number[0] == '1':
+        number = re.sub(r"[^\w\s]", "", number).replace(" ", "")
+        if number[0] == "1":
             number = number[1:]
 
         if not PhoneNumber.valid(number):
@@ -34,7 +35,7 @@ class PhoneNumber:
     def pretty(self):
         """Get prettified phone number"""
 
-        return f'({self.number[:3]})-{self.number[3:6]}-{self.number[6:]}'
+        return f"({self.number[:3]})-{self.number[3:6]}-{self.number[6:]}"
 
     def __init__(self, number):
         self.number = PhoneNumber.clean(number)

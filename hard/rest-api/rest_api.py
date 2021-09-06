@@ -1,17 +1,20 @@
 import json
 
+
 class User:
     def __init__(self, user):
-        self.name = user.get('name')
-        self.owes = user.get('owes')
-        self.owed_by = user.get('owed_by')
-        self.balance = user.get('balance')
+        self.name = user.get("name")
+        self.owes = user.get("owes")
+        self.owed_by = user.get("owed_by")
+        self.balance = user.get("balance")
 
     def get_as_dict(self):
-        user = {'name' : self.name, 
-                'owes' : self.owes,
-                'owed_by' : self.owed_by,
-                'balance' : self.balance,}
+        user = {
+            "name": self.name,
+            "owes": self.owes,
+            "owed_by": self.owed_by,
+            "balance": self.balance,
+        }
         return user
 
     def lend(self, name, amount):
@@ -41,53 +44,67 @@ class User:
     def __lt__(self, other):
         return self.name < other.name
 
+
 class RestAPI:
     def __init__(self, database={}):
-        users = [User(user) for user in database.get('users')]
-        self.database = {'users' : users}
-        self.database['users'].sort()
+        users = [User(user) for user in database.get("users")]
+        self.database = {"users": users}
+        self.database["users"].sort()
 
     def get_users(self, payload=None):
-        response = {'users' : [user.get_as_dict() for user in self.database.get('users')]}
+        response = {
+            "users": [user.get_as_dict() for user in self.database.get("users")]
+        }
         if payload:
-            payload = json.loads(payload).get('users')
-            response = {'users' : [user for user in response.get('users') if user.get('name') in payload]}
+            payload = json.loads(payload).get("users")
+            response = {
+                "users": [
+                    user
+                    for user in response.get("users")
+                    if user.get("name") in payload
+                ]
+            }
         return json.dumps(response)
 
     def add_user(self, payload):
-        user = {'name' : json.loads(payload).get('user'), 
-                'owes' : {},
-                'owed_by' : {},
-                'balance' : 0.0,}
+        user = {
+            "name": json.loads(payload).get("user"),
+            "owes": {},
+            "owed_by": {},
+            "balance": 0.0,
+        }
 
-        self.database.setdefault('users', []).append(User(user))
-        self.database['users'].sort()
+        self.database.setdefault("users", []).append(User(user))
+        self.database["users"].sort()
 
         return json.dumps(user)
 
     def make_deal(self, payload):
         payload = json.loads(payload)
-        lender, borrower, amount = payload.get('lender'), payload.get('borrower'), payload.get('amount')
+        lender, borrower, amount = (
+            payload.get("lender"),
+            payload.get("borrower"),
+            payload.get("amount"),
+        )
 
         lender_index, borrower_index = 0, 0
-        for i, user in enumerate(self.database.get('users')):
+        for i, user in enumerate(self.database.get("users")):
             if user.name == lender:
                 lender_index = i
             elif user.name == borrower:
                 borrower_index = i
 
-        self.database['users'][lender_index].lend(borrower, amount)
-        self.database['users'][borrower_index].borrow(lender, amount)
+        self.database["users"][lender_index].lend(borrower, amount)
+        self.database["users"][borrower_index].borrow(lender, amount)
 
-        return self.get_users(payload=json.dumps({'users' : [lender, borrower]}))
-
+        return self.get_users(payload=json.dumps({"users": [lender, borrower]}))
 
     def get(self, url, payload=None):
-        if url == '/users':
+        if url == "/users":
             return self.get_users(payload)
-                
+
     def post(self, url, payload=None):
-        if url == '/add':
+        if url == "/add":
             return self.add_user(payload)
-        elif url == '/iou':
+        elif url == "/iou":
             return self.make_deal(payload)

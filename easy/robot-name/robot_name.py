@@ -6,6 +6,7 @@ https://exercism.org/tracks/python/exercises/robot-name
 
 from random import randint
 
+
 class Robot:
     """Robot class"""
 
@@ -21,22 +22,19 @@ class Robot:
         """
 
         while True:
-            name = f'{chr(randint(65, 90))}{chr(randint(65, 90))}{randint(0, 999):03}'
+            name = f"{chr(randint(65, 90))}{chr(randint(65, 90))}{randint(0, 999):03}"
             if name not in cls.names:
                 cls.names.append(name)
                 break
         return name
 
-
     def __init__(self):
         self.name = self.__generate_name()
-
 
     def reset(self):
         """Method to reset the robot's state"""
 
         self.__init__()
-
 
     def greet(self):
         """Method to get greeting from a robot"""

@@ -1,12 +1,12 @@
 def clear_word(word):
     word = word.strip().lower()
-    
+
     for char in word:
         if not char.isalnum():
             word = word[1:]
         else:
             break
-        
+
     for char in word[::-1]:
         if not char.isalnum():
             word = word[:-1]
@@ -15,8 +15,9 @@ def clear_word(word):
 
     return word
 
+
 def count_words(sentence):
-    sentence = sentence.replace(',', ' ').replace('_', ' ')
+    sentence = sentence.replace(",", " ").replace("_", " ")
     sentence = [clear_word(word) for word in sentence.split() if clear_word(word)]
 
     counter = {}

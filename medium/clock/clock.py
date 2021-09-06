@@ -20,4 +20,3 @@ class Clock:
         self.minutes -= minutes % 60
 
         return Clock(self.hours, self.minutes)
-

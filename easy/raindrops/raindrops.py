@@ -9,4 +9,3 @@ def convert(number):
         result += "Plong"
 
     return result if result else str(number)
-
