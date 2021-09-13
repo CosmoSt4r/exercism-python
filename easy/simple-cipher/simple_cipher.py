@@ -11,39 +11,33 @@ from itertools import cycle
 class Cipher:
     """Implementation of Caesar Cipher"""
 
-    __alphabet: str = "abcdefghijklmnopqrstuvwxyz"
+    def __init__(self, key: str = None,
+                 alphabet: str = "abcdefghijklmnopqrstuvwxyz"):
+        self.alphabet = alphabet
+        self.key = key if key else self.__generate_key()
 
-    @classmethod
-    def generate_key(cls, length: int = 100) -> str:
+    def __generate_key(self, length: int = 100) -> str:
         """Generate random key of given length"""
 
-        return "".join([choice(cls.__alphabet) for _ in range(length)])
-
-    def __init__(self, key: str = None):
-        self.key = key if key else self.generate_key()
+        return "".join([choice(self.alphabet) for _ in range(length)])
 
     def __encode_char(self, char: str, key: str) -> str:
-        return self.__alphabet[
-            (self.__alphabet.index(char) + self.__alphabet.index(key))
-            % len(self.__alphabet)
-        ]
+        index = self.alphabet.index(char) + self.alphabet.index(key)
+        return self.alphabet[index % len(self.alphabet)]
 
     def __decode_char(self, char: str, key: str) -> str:
-        return self.__alphabet[
-            (
-                len(self.__alphabet)
-                + self.__alphabet.index(char)
-                - self.__alphabet.index(key)
-            )
-            % len(self.__alphabet)
-        ]
+        index = (
+            len(self.alphabet) + self.alphabet.index(char)
+            - self.alphabet.index(key)
+        )
+        return self.alphabet[index % len(self.alphabet)]
 
     def encode(self, text: str) -> str:
         """Method for encoding given text"""
 
         return "".join(
             [
-                self.__encode_char(char, k) if char in self.__alphabet else char
+                self.__encode_char(char, k) if char in self.alphabet else char
                 for char, k in zip(text, cycle(self.key))
             ]
         )
@@ -53,7 +47,7 @@ class Cipher:
 
         return "".join(
             [
-                self.__decode_char(char, k) if char in self.__alphabet else char
+                self.__decode_char(char, k) if char in self.alphabet else char
                 for char, k in zip(text, cycle(self.key))
             ]
         )
